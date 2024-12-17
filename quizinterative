@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #E8F5E9; /* Fundo natural claro */
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #2E7D32; /* Verde escuro */
+    }
+    .question {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: #388E3C; /* Verde mais claro */
+    }
+    .answer {
+      background-color: #4CAF50; /* Verde escuro */
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 5px;
+      cursor: pointer;
+      width: 200px;
+    }
+    .answer:hover {
+      background-color: #388E3C; /* Verde mais claro no hover */
+    }
+    .result {
+      font-size: 22px;
+      margin-top: 20px;
+      color: #2E7D32;
+    }
+    .vls-button {
+      background-color: #9C27B0; /* Cor destacada para o botão */
+      color: white;
+      padding: 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    .vls-button:hover {
+      background-color: #7B1FA2;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Interactive Weight Loss Quiz</h1>
+<div id="quiz-container">
+  <div id="question" class="question"></div>
+  <div id="answers"></div>
+  <div id="result" class="result"></div>
+</div>
+
+<script>
+  const questions = [
+    {
+      question: "How often do you eat throughout the day?",
+      answers: ["Every 3 hours", "Once or twice", "I skip meals", "I snack throughout the day"],
+      scores: [3, 2, 1, 2]
+    },
+    {
+      question: "How often do you engage in physical activity?",
+      answers: ["Daily", "3-4 times a week", "Once a week", "Rarely"],
+      scores: [3, 2, 1, 0]
+    },
+    {
+      question: "How do you feel about your energy levels during the day?",
+      answers: ["I feel energized all day", "I have energy, but occasionally feel tired", "I feel tired most of the day", "I often feel fatigued"],
+      scores: [3, 2, 1, 0]
+    },
+    {
+      question: "Do you often experience cravings?",
+      answers: ["Rarely", "Sometimes", "Frequently", "Almost always"],
+      scores: [3, 2, 1, 0]
+    },
+    {
+      question: "Do you focus on eating whole, nutritious foods?",
+      answers: ["Always", "Most of the time", "Sometimes", "Rarely"],
+      scores: [3, 2, 1, 0]
+    }
+  ];
+
+  let currentQuestionIndex = 0;
+  let totalScore = 0;
+
+  function showQuestion(index) {
+    const questionElement = document.getElementById("question");
+    const answersElement = document.getElementById("answers");
+
+    const question = questions[index];
+    questionElement.innerText = question.question;
+    answersElement.innerHTML = "";
+
+    question.answers.forEach((answer, i) => {
+      const button = document.createElement("button");
+      button.classList.add("answer");
+      button.innerText = answer;
+      button.onclick = () => selectAnswer(i, question.scores[i]);
+      answersElement.appendChild(button);
+    });
+  }
+
+  function selectAnswer(answerIndex, score) {
+    totalScore += score;
+    currentQuestionIndex++;
+
+    if (currentQuestionIndex < questions.length) {
+      showQuestion(currentQuestionIndex);
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    const resultElement = document.getElementById("result");
+    let vlsLink = "";
+    let resultText = "";
+
+    if (totalScore >= 12) {
+      resultText = "Great job! You're on track to achieve your weight loss goals!";
+      vlsLink = "link-to-your-advanced-video.html"; // Link para vídeo avançado
+    } else if (totalScore >= 8) {
+      resultText = "You're doing well! Let us help you accelerate your progress!";
+      vlsLink = "link-to-your-intermediate-video.html"; // Link para vídeo intermediário
+    } else {
+      resultText = "It seems like you could use some guidance. Let's help you get started with easy steps!";
+      vlsLink = "link-to-your-beginner-video.html"; // Link para vídeo iniciante
+    }
+
+    resultElement.innerText = resultText;
+
+    const vlsButton = document.createElement("a");
+    vlsButton.href = vlsLink;
+    vlsButton.innerText = "Watch Your Personalized Tips Now";
+    vlsButton.classList.add("vls-button");
+
+    document.getElementById("quiz-container").appendChild(vlsButton);
+  }
+
+  // Start the quiz
+  showQuestion(currentQuestionIndex);
+</script>
+
+</body>
+</html>
